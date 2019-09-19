@@ -147,6 +147,48 @@ app.get('/nlp/:year/:source', (req, res) => {
     });
 });
 
+app.get('/all/:source/:topic_amount', (req, res) => {
+    if (THREAD_RUNING) {
+        console.warn('   >> Debouce principle rejected one request.');
+        res.json({state: 'failed', reason: 'process is already running'});
+        return;
+    }
+    console.log("\nNew GET request: ", { model: 'LDA(total)', ...req.params });
+    THREAD_RUNING = true;
+    fs.readFile('../public/data/all$' + req.params.topic_amount + '@' + req.params.source + '.json',
+    {encoding: 'UTF-8'}, (err, data) => {
+        if (err) {
+            console.log('   >> Started running LDA model...');
+            process.exec('python ../public/Python/LdaAll.py ' + req.params.source + ' ' + req.params.topic_amount,
+                (error, stdout, stderr) => {
+                    if (error) {
+                        console.warn(error);
+                        THREAD_RUNING = false;
+                    }
+                    else {
+                        fs.readFile('../public/data/all$' + req.params.topic_amount
+                                + '@' + req.params.source + '.json', {encoding: 'UTF-8'}, (err, data) => {
+                            if (err) {
+                                console.warn(err);
+                            }
+                            else {
+                                console.log("   >> LDA model complished");
+                                console.log(" >> Respond returned, total size = ", data.length);
+                                res.json(data);
+                            }
+                        });
+                        THREAD_RUNING = false;
+                    }
+                });
+        }
+        else {
+            console.log(" >> Respond returned, total size = ", data.length);
+            res.json(data);
+            THREAD_RUNING = false;
+        }
+    });
+});
+
 app.get('/clear', (req, res) => {
     if (THREAD_RUNING) {
         res.json({state: 'failed', reason: 'process is already running'});

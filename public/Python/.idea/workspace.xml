@@ -2,11 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a9dd9ce1-ec4c-424d-8a1a-1c66394f0e8c" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/nlp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Python.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Python.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../build/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../build/server.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data/lda$10$2016@sjw.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data/lda$10$2016@sjyj.json" beforeDir="false" afterPath="$PROJECT_DIR$/../data/lda$10$2016@sjyj.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data/snownlp$2016@sjw.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data/snownlp$2017@sjw.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data/snownlp$2018@sjw.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data/tsne$10$2016@sjw.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../data/tsne$10$2016@sjyj.json" beforeDir="false" afterPath="$PROJECT_DIR$/../data/tsne$10$2016@sjyj.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../wsp.code-workspace" beforeDir="false" afterPath="$PROJECT_DIR$/../../wsp.code-workspace" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../src/Distribution.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../../src/Distribution.tsx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,20 +25,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Lda.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1080">
+            <state relative-caret-position="90">
               <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nlp.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
+            <state relative-caret-position="1110">
+              <caret line="39" column="18" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
               <folding>
                 <element signature="e#23#33#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/LdaAll.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="432">
+              <caret line="91" column="28" selection-start-line="91" selection-start-column="28" selection-end-line="91" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -71,6 +86,7 @@
         <option value="$PROJECT_DIR$/snownlo.py" />
         <option value="$PROJECT_DIR$/snownlp.py" />
         <option value="$PROJECT_DIR$/nlp.py" />
+        <option value="$PROJECT_DIR$/LdaAll.py" />
       </list>
     </option>
   </component>
@@ -280,8 +296,18 @@
     <entry file="file://$PROJECT_DIR$/snownlo.py" />
     <entry file="file://$PROJECT_DIR$/Lda.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1080">
+        <state relative-caret-position="90">
           <caret line="3" column="10" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nlp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1110">
+          <caret line="39" column="18" selection-start-line="39" selection-start-column="18" selection-end-line="39" selection-end-column="18" />
+          <folding>
+            <element signature="e#23#33#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -295,13 +321,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nlp.py">
+    <entry file="file://$PROJECT_DIR$/LdaAll.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
-          <folding>
-            <element signature="e#23#33#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="432">
+          <caret line="91" column="28" selection-start-line="91" selection-start-column="28" selection-end-line="91" selection-end-column="28" />
         </state>
       </provider>
     </entry>

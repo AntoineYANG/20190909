@@ -2,7 +2,7 @@
  * @Author: Antoine YANG 
  * @Date: 2019-09-10 10:38:15 
  * @Last Modified by: Antoine YANG
- * @Last Modified time: 2019-09-17 12:00:23
+ * @Last Modified time: 2019-09-19 11:03:45
  */
 import React from 'react';
 import './bootstrap.css';
@@ -47,13 +47,16 @@ var active: () => void
 
 export var run: (year: number, source: Source, topic_amount: number) => Promise<void>
     = async (year: number, source: Source, topic_amount: number) => {
+        loadCloud({topics: [{topic: 0, words: []}], distributions: []});
+        importAsDistribution([]);
+        setCor({topics: [{topic: 0, words: []}], distributions: []}, {data: []}, [], source, topic_amount);
+        importAsEmotionAll([]);
         await axios.get(`/run/${year}/${source === Source.市建委 ? 'sjw' : 'sjyj'}/${topic_amount}`, {
                     headers: 'Content-type:text/html;charset=utf-8'
                 })
                 .then((value: AxiosResponse<any>) => {
                     let data: string = value.data.toString().replace('\ufeff', '');
                     loadCloud(JSON.parse(data));
-                    importAsDistribution(JSON.parse(data));
                     axios.get(`/tsne/${year}/${source === Source.市建委 ? 'sjw' : 'sjyj'}/${topic_amount}`, {
                             headers: 'Content-type:text/html;charset=utf-8'
                         })
@@ -87,8 +90,19 @@ export var run: (year: number, source: Source, topic_amount: number) => Promise<
                                             part.push(parseFloat(e));
                                         });
                                         array.push(part);
-                                        setCor(JSON.parse(data), tsnedata, array[year - 2016], source, topic_amount);
                                         importAsEmotionAll(array);
+                                        setCor(JSON.parse(data), tsnedata, array[year - 2016], source, topic_amount);
+                                        axios.get(`/all/${source === Source.市建委 ? 'sjw' : 'sjyj'}/${topic_amount}`, {
+                                            headers: 'Content-type:text/html;charset=utf-8'
+                                        })
+                                        .then((value: AxiosResponse<any>) => {
+                                            importAsDistribution(JSON.parse(value.data));
+                                        }, (reason: any) => {
+                                            console.warn(reason);
+                                        })
+                                        .catch((reason: any) => {
+                                            console.warn(reason);
+                                        });
                                     }, (reason: any) => {
                                         console.warn(reason);
                                     })

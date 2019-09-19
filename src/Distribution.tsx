@@ -2,11 +2,12 @@
  * @Author: Antoine YANG 
  * @Date: 2019-09-10 13:36:37 
  * @Last Modified by: Antoine YANG
- * @Last Modified time: 2019-09-15 11:24:40
+ * @Last Modified time: 2019-09-19 12:21:35
  */
 import React, { Component } from 'react';
 import './bootstrap.css';
 import './style.css';
+import $ from 'jquery';
 import { drawCloud } from './Cloud';
 
 
@@ -18,12 +19,17 @@ export interface ldaData {
 export interface DistributionProps {}
 
 export interface DistributionState {
-    data: Array<number>;
+    data: Array<Array<Array<{stack: number, value: number}>>>;
 }
 
-export var importAsDistribution: (filedata: ldaData) => void = (filedata: ldaData) => void 0;
+export var importAsDistribution: (filedata: Array<Array<Array<{stack: number, value: number}>>>) => void
+    = (filedata: Array<Array<Array<{stack: number, value: number}>>>) => void 0;
 
 class Distribution extends Component<DistributionProps, DistributionState, any> {
+    private bottom: number = 200;
+    private top: number = 30;
+    private left: number = 60;
+    private right: number = 370;
     private colortap: Array<string> = ["#FFB6C1", "#DC143C", "#A0522D", "#FF1493", "#FF00FF", "#800080", "#4B0082",
         "#7B68EE", "#0000FF", "#000080", "#6495ED", "#778899", "#00BFFF", "#B0E0E6", "#00FFFF", "#2F4F4F", "#00FA9A",
         "#006400", "#FFFF00", "#FF8C00"];
@@ -36,62 +42,84 @@ class Distribution extends Component<DistributionProps, DistributionState, any> 
     }
 
     public render(): JSX.Element {
-        let step: number = 380 / this.state.data.length;
-        let max: number = 0.1;
-        this.state.data.forEach(d => {
-            if (d > max) {
-                max = d;
-            }
-        });
+        let topic: Array<Array<number>> = [];
+        if (this.state.data.length === 0) {
+            return (<></>);
+        }
+        let amount: number = this.state.data[0][0].length;
+        for (let i: number = 0; i < amount; i++) {
+            topic.push([]);
+        }
+        for (let year: number = 0; year < this.state.data.length; year++) {
+            this.state.data[year].forEach(one => {
+                one.forEach(d => {
+                    topic[d.stack][year] = d.value;
+                });
+            });
+        }
+        let list: Array<number> = [];
+        for (let i: number = 0; i < this.state.data.length; i++) {
+            list.push(2016 + i);
+        }
         return (
             <svg width={420} height={230} id={'distribution'} xmlns={`http://www.w3.org/2000/svg`}>
+                <path d={`M${this.left},${this.bottom} L${this.left},${this.top}`} style={{stroke: 'black'}} />
+                <path d={`M${this.left},${this.bottom} L${this.right},${this.bottom}`} style={{stroke: 'black'}} />
                 {
-                    this.state.data.map((item, index) => {
+                    list.map((item, index) => {
                         return (
-                            <rect xmlns={`http://www.w3.org/2000/svg`} key={`topic_distri_${index}`}
-                                x = { 20 + index * step + 0.18 * step } y = { 186 - item * 150 / max }
-                                width = { step * 0.64 } height = { item * 150 / max }
-                                style = {{
-                                    fill: this.colortap[index % 20],
-                                    stroke: 'black'
+                            <rect key={"back" + index}
+                                x={this.left + index * ((this.right - this.left) / this.state.data.length)}
+                                y={this.top}
+                                width={((this.right - this.left) / this.state.data.length)}
+                                height={this.bottom - this.top}
+                                style={{
+                                    fill: '#ccc'
                                 }}
-                                onClick = {
-                                    () => {
-                                        drawCloud(index);
-                                    }
-                                }
-                            />
+                                ref={"dom" + index}
+                                onMouseOver={() => {
+                                    $(this.refs["dom" + index]).css('fill', '#eee');
+                                }}
+                                onMouseOut={() => {
+                                    $(this.refs["dom" + index]).css('fill', '#ccc');
+                                }} />
                         )
                     })
                 }
                 {
-                    this.state.data.map((item, index) => {
+                    topic.map((item, index) => {
                         return (
-                            <text xmlns={`http://www.w3.org/2000/svg`} key={`topic_distri_label_${index}`}
-                                x = { 20 + index * step + 0.52 * step } y = { 203 }
-                                textAnchor = { 'middle' }
-                                style = {{
-                                    fill: 'black',
-                                    fontSize: Math.sqrt(step * 36) / 3.4
-                                }}
-                            >
-                                { `主题${ index + 1 }` }
-                            </text>
+                            <path key={"polyline" + index}
+                                d={(() => {
+                                    let str: string = 'M';
+                                    item.forEach((d, idx) => {
+                                        if (idx === 0) {
+                                            str += `${this.left + 0.5 * ((this.right - this.left) / this.state.data.length)},`;
+                                            str += `${this.bottom - (this.bottom - this.top) * d}`;
+                                        }
+                                        else {
+                                            str += ` L${this.left + (idx + 0.5) * ((this.right - this.left) / this.state.data.length)},`;
+                                            str += `${this.bottom - (this.bottom - this.top) * d}`;
+                                        }
+                                    });
+                                    return str;
+                                })()}
+                                onClick={() => {drawCloud(index + 1)}}
+                                style={{
+                                    stroke: this.colortap[index % this.colortap.length],
+                                    strokeWidth: 2,
+                                    fill: 'none'
+                                }} />
                         )
                     })
                 }
                 {
-                    this.state.data.map((item, index) => {
+                    list.map((item, index) => {
                         return (
-                            <text xmlns={`http://www.w3.org/2000/svg`} key={`topic_distri_value_${index}`}
-                                x = { 20 + index * step + 0.52 * step } y = { 180 - item * 150 / max }
-                                textAnchor = { 'middle' }
-                                style = {{
-                                    fill: 'black',
-                                    fontSize: Math.sqrt(step * 36) / 3.6
-                                }}
-                            >
-                                { `${ parseInt((item * 10000).toString()) / 100 }%` }
+                            <text key={"year" + index}
+                                    x={this.left + (index + 0.5) * ((this.right - this.left) / this.state.data.length)}
+                                    y={this.bottom + 15} textAnchor={'middle'} >
+                                { item }
                             </text>
                         )
                     })
@@ -100,22 +128,9 @@ class Distribution extends Component<DistributionProps, DistributionState, any> 
         );
     }
 
-    public import(filedata: ldaData): void {
-        let data: Array<number> = [];
-        let groups: number = filedata.distributions[0].length;
-        for (let i: number = 0; i < groups; i++) {
-            data.push(0);
-        }
-        filedata.distributions.forEach(line => {
-            line.forEach(d => {
-                data[d.stack] += d.value;
-            });
-        });
-        for (let i: number = 0; i < data.length; i++) {
-            data[i] /= filedata.distributions.length;
-        }
+    public import(filedata: Array<Array<Array<{stack: number, value: number}>>>): void {
         this.setState({
-            data: data
+            data: filedata
         });
     }
 
